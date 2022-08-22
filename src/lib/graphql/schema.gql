@@ -1,0 +1,248 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+interface Node {
+  """A globally unique identifier"""
+  id: ID!
+}
+
+type CityConnectionEdge {
+  node: City!
+}
+
+type CityConnectionRelation {
+  edges: [CityConnectionEdge!]!
+}
+
+type Country implements Node {
+  id: ID!
+  code: String!
+  name: String!
+  longitude: Float
+  latitude: Float
+
+  """An array relationship for cities"""
+  cities: [City!]!
+  cities_connection(
+    """Paginate before opaque cursor"""
+    before: String
+
+    """Paginate after opaque cursor"""
+    after: String
+
+    """Paginate first"""
+    first: Float
+
+    """Paginate last"""
+    last: Float
+    where: CityInputBoolExp
+  ): CityConnectionRelation!
+}
+
+"""
+Boolean expression to filter rows from the table "cities". All fields are combined with a logical 'AND'.
+"""
+input CityInputBoolExp {
+  id: Int_comparison_exp
+  createdAt: Date_comparison_exp
+  updatedAt: Date_comparison_exp
+  deletedAt: Date_comparison_exp
+  city_country: CountryInputBoolExp
+  country: String_comparison_exp
+  name: String_comparison_exp
+  longitude: Float_comparison_exp
+  latitude: Float_comparison_exp
+}
+
+"""
+Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'.
+"""
+input Int_comparison_exp {
+  _eq: Int
+  _gt: Int
+  _gte: Int
+  _in: [Int!]
+  _is_null: Int
+  _lt: Int
+  _lte: Int
+  _neq: Int
+  _nin: [Int!]
+}
+
+"""
+Boolean expression to compare columns of type "Date". All fields are combined with logical 'AND'.
+"""
+input Date_comparison_exp {
+  _eq: Timestamp
+  _gt: Timestamp
+  _gte: Timestamp
+  _in: [Timestamp!]
+  _is_null: Boolean
+  _lt: Timestamp
+  _lte: Timestamp
+  _neq: Timestamp
+  _nin: [Timestamp!]
+}
+
+"""
+`Date` type as integer. Type represents date and time as number of milliseconds from start of UNIX epoch.
+"""
+scalar Timestamp
+
+"""
+Boolean expression to filter rows from the table "countries". All fields are combined with a logical 'AND'.
+"""
+input CountryInputBoolExp {
+  code: String_comparison_exp
+  name: String_comparison_exp
+  longitude: Float_comparison_exp
+  latitude: Float_comparison_exp
+  cities: [CityInputBoolExp!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
+input String_comparison_exp {
+  _eq: String
+  _gt: String
+  _gte: String
+  _ilike: String
+  _in: [String!]
+  _iregex: String
+  _is_null: Boolean
+  _like: String
+  _lt: String
+  _lte: String
+  _neq: String
+  _nilike: String
+  _nin: [String!]
+  _niregex: String
+  _nlike: String
+  _nregex: String
+  _nsimilar: String
+  _regex: String
+  _similar: String
+}
+
+"""
+Boolean expression to compare columns of type "Float". All fields are combined with logical 'AND'.
+"""
+input Float_comparison_exp {
+  _eq: Float
+  _gt: Float
+  _gte: Float
+  _in: [Float!]
+  _is_null: Float
+  _lt: Float
+  _lte: Float
+  _neq: Float
+  _nin: [Float!]
+}
+
+type City implements Node {
+  """A globally unique identifier"""
+  id: ID!
+  createdAt: Timestamp!
+  updatedAt: Timestamp!
+  deletedAt: Timestamp
+  name: String!
+  longitude: Float
+  latitude: Float
+  country: String!
+  city_country: Country!
+}
+
+type CountryConnection {
+  edges: [CountryEdge!]
+  pageInfo: CountryPageInfo
+}
+
+type CountryEdge {
+  cursor: String
+  node: Country
+}
+
+type CountryPageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type CityConnection {
+  edges: [CityEdge!]
+  pageInfo: CityPageInfo
+}
+
+type CityEdge {
+  cursor: String
+  node: City
+}
+
+type CityPageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type Query {
+  node(id: ID!): Node
+  cities_connection(
+    """Paginate before opaque cursor"""
+    before: String
+
+    """Paginate after opaque cursor"""
+    after: String
+
+    """Paginate first"""
+    first: Float
+
+    """Paginate last"""
+    last: Float
+    where: CityInputBoolExp
+  ): CityConnection!
+  countries_connection(
+    """Paginate before opaque cursor"""
+    before: String
+
+    """Paginate after opaque cursor"""
+    after: String
+
+    """Paginate first"""
+    first: Float
+
+    """Paginate last"""
+    last: Float
+    where: CountryInputBoolExp
+  ): CountryConnection!
+}
+
+type Mutation {
+  """Insert a single city to 'cities' table"""
+  insert_city(input: InsertCityInput!): City!
+  insert_country(input: InsertCountryInput!): Country!
+}
+
+"""
+input type for inserting data into table "cities"
+"""
+input InsertCityInput {
+  country: String!
+  name: String!
+  longitude: Float
+  latitude: Float
+}
+
+"""
+input type for inserting data into table "countries"
+"""
+input InsertCountryInput {
+  code: String!
+  name: String!
+  longitude: Float
+  latitude: Float
+  cities: [InsertCityInput!] = []
+}
